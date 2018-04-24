@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prometheus
+spec:
+  hostNetwork: true
+  containers:
+    - name: prometheus
+      image: rycus86/prometheus:armhf
+      args:
+        - "--config.file=/prometheus-data/prometheus.yml"
+        - "--storage.tsdb.path=/prometheus-data/data/"
+        - "--storage.tsdb.retention=30d"
+      volumeMounts:
+        - name: prom-data
+          mountPath: /prometheus-data
+  volumes:
+    - name: prom-data
+      hostPath:
+        path: /root/prometheus-data
+        type: DirectoryOrCreate

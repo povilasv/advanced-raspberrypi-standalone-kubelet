@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grafana
+spec:
+  hostNetwork: true
+  containers:
+    - name: grafana
+      image: easypi/grafana-arm:latest
+      env:
+      - name: GF_INSTALL_PLUGINS
+        value: "grafana-clock-panel,grafana-simple-json-datasource"
+      - name: GF_METRICS_ENABLED
+        value: "true"
+      volumeMounts:
+      - name: grafana-data
+        mountPath: /var/lib/grafana
+  volumes:
+  - name: grafana-data
+    hostPath:
+        path: /root/grafana-data
+        type: 'DirectoryOrCreate'
